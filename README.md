@@ -42,16 +42,37 @@ print("Emodul based on Sigrist et al.: " + str(slab_elastic_modulus.e_sigrist_20
 View the package to find more usefull functions for other mechanical paramters
 
 
-Example usage for crack propagation models:
+Example usage for crack propagation models with uncertainty computation). However you can also provide normal float values:
 ```python
 import snow_models.crack_propagation as cp_models
+
 g = 9.81 #m/s^2
 Emod_slab = 10000000 #Pa
 slab_thickness = 0.5 #m
 collapse_heigth = 0.003 #m
 slab_density = 200 #kg/m^3
 
-cp_models.solitary_wave_speed(g, Emod_slab,slab_thickness,collapse_heigth,slab_density)
+speed = cp_models.solitary_wave_speed(g, Emod_slab,slab_thickness,collapse_heigth,slab_density)
+print(speed)
+
+#%% Or try out to automatically compute uncertainty
+
+from uncertainties import ufloat
+
+# Define the variables with 5% uncertainty (using ufloat)
+g = ufloat(9.81, 9.81 * 0.05)  # 9.81 m/s^2 with 5% uncertainty
+Emod_slab = ufloat(10000000, 10000000 * 0.05)  # 10,000,000 Pa with 5% uncertainty
+slab_thickness = ufloat(0.5, 0.5 * 0.05)  # 0.5 m with 5% uncertainty
+collapse_heigth = ufloat(0.003, 0.003 * 0.05)  # 0.003 m with 5% uncertainty
+slab_density = ufloat(200, 200 * 0.05)  # 200 kg/m^3 with 5% uncertainty
+
+speed = cp_models.solitary_wave_speed(g, Emod_slab, slab_thickness, collapse_heigth,slab_density)
+print(speed)
+
+tdd = cp_models.solitary_wave_touchdown(g, Emod_slab, slab_thickness, collapse_heigth,slab_density)
+print(tdd)
+
+
 
 # more parametrizations are available......
 ```
