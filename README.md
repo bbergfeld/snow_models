@@ -1,22 +1,30 @@
 # snow_models
 
-Welcome to **snow_models** – a Python package designed for the easy and consistent application of snow and avalanche-related parameterizations, with a particular focus on snow density. This package provides several models and functions to support research and development in snow mechanics and avalanche forecasting.
+Welcome to **snow_models** – a Python package designed for the easy and consistent application of snow- and avalanche-related parameterizations and models. This package provides several models and functions to support research and development in snow mechanics and avalanche forecasting.
 
 ## Key Modules
 
 - **`snow_models.mechanical_params`**  
-  Parametrizations and conversion functions for mechanical properties of snow, including density and related parameters.
+  Parametrizations and conversion functions for mechanical properties of snow.
 
 - **`snow_models.crack_propagation`**  
-  Models for computing crack propagation speeds in weak snow layers, a critical factor in avalanche dynamics.
+  Models to estimate crack propagation speeds in weak snow layers.
 
 - **`snow_models.wave_propagation`**  
-  Models to compute elastic wave speeds for different types of waves, relevant for snow structure analysis and avalanche detection.
+  Models to compute elastic wave speeds for different types of waves.
 
 ## Purpose
 
-This package implements widely-used and published parameterizations to facilitate further research applications. It is designed to help researchers and practitioners integrate and use these models for snow and avalanche studies in an easy-to-use Python environment.
+This package implements published parameterizations to facilitate further research applications. It is designed to help researchers and practitioners integrate and use these models for snow and avalanche studies in an easy-to-use Python environment.
 
+## Installation
+
+You can install **snow_models** directly from GitHub using `pip`:
+
+```bash
+pip install git+https://github.com/bbergfeld/snow_models.git
+
+## Examples
 
 Example usage for Emodulus parametrizations:
 ```python
