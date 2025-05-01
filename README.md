@@ -19,7 +19,8 @@ This package implements published parameterizations to facilitate further resear
 
 ## Installation
 
-You can install **snow_models** directly from GitHub using `pip`:
+You can install **snow_models** directly from GitHub using `pip`
+(make sure git is installed in your active environment (conda install git):
 
 ```bash
 pip install git+https://github.com/bbergfeld/snow_models.git
