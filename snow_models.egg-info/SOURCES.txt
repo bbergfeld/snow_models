@@ -1,0 +1,13 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+snow_models/__init__.py
+snow_models/crack_propagation.py
+snow_models/mechanical_params.py
+snow_models/wave_propagation.py
+snow_models.egg-info/PKG-INFO
+snow_models.egg-info/SOURCES.txt
+snow_models.egg-info/dependency_links.txt
+snow_models.egg-info/requires.txt
+snow_models.egg-info/top_level.txt
