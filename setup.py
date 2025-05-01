@@ -21,7 +21,6 @@ setup(
     packages=find_packages(),
 	install_requires=[
 		"numpy>=1.22",
-		"scipy>=1.9",
 		"uncertainties>=3.2.3"
 	],
     python_requires=">=3.7",
