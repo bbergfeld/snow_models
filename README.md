@@ -32,10 +32,12 @@ Example usage for Emodulus parametrizations:
 ```python
 from snow_models.mechanical_params import get_E_Mod as emod
 snow_density = 200 #kg/m**3
-slab_elastic_modulus ) = emod(snow_denstity, output_unit="MPa")
-print("Emodul based on Gerling et al.: " + str(slab_elastic_modulus.e_gerling_2017_AC)))  # provides the elastic modulus based on the parametrization by Gerling et al 2017
-print("Emodul based on Sigrist et al.: " + str(slab_elastic_modulus.e_sigrist_2006)))  # provides the elastic modulus based on the parametrization by Sigrist et al 2006
+slab_elastic_modulus = emod(snow_density, output_unit="MPa")
+print("Emodul based on Gerling et al.: " + str(slab_elastic_modulus.e_gerling_2017_AC()))  # provides the elastic modulus based on the parametrization by Gerling et al 2017
+print("Emodul based on Sigrist et al.: " + str(slab_elastic_modulus.e_sigrist_2006()))  # provides the elastic modulus based on the parametrization by Sigrist et al 2006
 # more parametrizations are available......
+
+
 ```
 View the package to find more usefull functions for other mechanical paramters
 
