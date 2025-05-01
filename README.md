@@ -23,6 +23,7 @@ You can install **snow_models** directly from GitHub using `pip`:
 
 ```bash
 pip install git+https://github.com/bbergfeld/snow_models.git
+```
 
 ## Examples
 
