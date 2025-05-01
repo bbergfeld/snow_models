@@ -68,13 +68,8 @@ slab_density = ufloat(200, 200 * 0.05)  # 200 kg/m^3 with 5% uncertainty
 
 speed = cp_models.solitary_wave_speed(g, Emod_slab, slab_thickness, collapse_heigth,slab_density)
 print(speed)
-
 tdd = cp_models.solitary_wave_touchdown(g, Emod_slab, slab_thickness, collapse_heigth,slab_density)
 print(tdd)
-
-
-
-# more parametrizations are available......
 ```
-View the package to find more usefull functions for other mechanical paramters
+
 
