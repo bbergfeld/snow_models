@@ -6,7 +6,6 @@ Author: Bastian Bergfeld
 Requires-Python: >=3.7
 License-File: LICENSE
 Requires-Dist: numpy>=1.22
-Requires-Dist: scipy>=1.9
 Requires-Dist: uncertainties>=3.2.3
 Dynamic: author
 Dynamic: license-file

@@ -13,46 +13,47 @@ Date Created: <2025.04.25>
 """
 
 #%% Theoretical estimates of weak layer crack speeds in snow:
-import uncertainties
+from uncertainties import wrap as unc_wrapper
 import numpy as np
 import pandas as pd
 
-def solitary_wave_speed(g, E, h, hf, rho):
+def _solitary_wave_speed(g, E, h, hf, rho):
     ''' Heierli 2005 - Solitary fracture waves in metastable snow stratifications, Journal of Geophysical Research, Equation 7a
     g = gravitational constant
     E = elastic modulus slab
     h = slab thickness
     hf = collapse height
     rho = mean slab density
+    s
+    return: speed in m/s
+
     '''
     D = (E*h**3)/12 # flexural rigidity of the slab 
     c4 = (g*D)/(2*hf*rho*h)
-    c = uncertainties.unumpy.sqrt(uncertainties.unumpy.sqrt(c4))
-    d = { 'modelled_speed': c}
-    df = pd.DataFrame(data=d,index=E.index)   
-    df.modelled_speed.unit = 'm s$^{-1}$'
-    return(df)
-solitary_wave_speed_with_unc = uncertainties.wrap(solitary_wave_speed)
+    c = np.sqrt(np.sqrt(c4))
+    
+    return(c)
+solitary_wave_speed = unc_wrapper(_solitary_wave_speed)
 
-def solitary_wave_touchdown(g, E, h, hf, rho):
+def _solitary_wave_touchdown(g, E, h, hf, rho):
     ''' Heierli 2005 - Solitary fracture waves in metastable snow stratifications, Journal of Geophysical Research, Equation 7a
     g = gravitational constant
     E = elastic modulus slab
     h = slab thickness
     hf = collapse height
     rho = mean slab density
+    
+    return: touchdown distance in m
     '''
     gamma = 2.331 # from Heierli
     D = (E*h**3)/12 # flexural rigidity of the slab 
     tdd4 = gamma**4 * (2*hf*D)/(g*rho*h)
-    tdd = uncertainties.unumpy.sqrt(uncertainties.unumpy.sqrt(tdd4))
-    d = { 'modelled_touchdown': tdd}
-    df = pd.DataFrame(data=d,index=E.index)   
-    df.modelled_touchdown.unit = 'm'
-    return(df)
-solitary_wave_touchdown_with_unc = uncertainties.wrap(solitary_wave_touchdown)
+    tdd = np.sqrt(np.sqrt(tdd4))
 
-def mc_clung_fracture_speeds (nu, E, rho):
+    return(tdd)
+solitary_wave_touchdown = unc_wrapper(_solitary_wave_touchdown)
+
+def _mc_clung_fracture_speeds (nu, E, rho):
     ''' Mc Clung 2005 - Approximate estimates of fracture speeds for dry slab avalanches, Geophysical Research letters, Equation 1
     E = elastic modulus slab
     nu =  Poisson ratio (-)
@@ -62,8 +63,9 @@ def mc_clung_fracture_speeds (nu, E, rho):
     low_c = 0.7*np.sqrt(G/rho)
     high_c = 0.9*np.sqrt(G/rho)
     return(low_c,high_c)
-    
-def anticrack_propagation_speed(g, E, nu, h, hf, rho, theta, l, C_initial_guess=0.5):
+mc_clung_fracture_speeds = unc_wrapper(_mc_clung_fracture_speeds)
+
+def _anticrack_propagation_speed(g, E, nu, h, hf, rho, theta, l, C_initial_guess=0.5):
     ''' Heierli dissertation - Anticrack model for slab avalanche release, Equation 5.17
         the formula is a dispersion relation which links speed ot touchdowndistance
         hf = sollapse height (m)
@@ -105,4 +107,5 @@ def anticrack_propagation_speed(g, E, nu, h, hf, rho, theta, l, C_initial_guess=
         
     C = get_speed_for_td_length(L)
     c = C*shear_wave_velocity
-    return(c) 
+    return(c)
+anticrack_propagation_speed = unc_wrapper(_anticrack_propagation_speed)

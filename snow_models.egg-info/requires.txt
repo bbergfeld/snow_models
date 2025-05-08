@@ -1,3 +1,2 @@
 numpy>=1.22
-scipy>=1.9
 uncertainties>=3.2.3
