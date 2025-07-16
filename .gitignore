@@ -1,9 +1,16 @@
 # Python build files
 __pycache__
 
-# editor files
+# build files
+build/
+*.egg-info/
 
+# editor files
+.vscode/
 
 # test files
+test/
 
+# Distribution files
+dist/
 
