@@ -30,7 +30,7 @@ pip install git+https://github.com/bbergfeld/snow_models.git
 
 Example usage for Emodulus parametrizations:
 ```python
-from snow_models.mechanical_params import get_E_Mod as emod
+from snow_models.mechanical_params import get_E_from_rho as emod
 snow_density = 200 #kg/m**3
 slab_elastic_modulus = emod(snow_density, output_unit="MPa")
 print("Emodul based on Gerling et al.: " + str(slab_elastic_modulus.e_gerling_2017_AC()))  # provides the elastic modulus based on the parametrization by Gerling et al 2017

@@ -16,7 +16,7 @@ Date Created: <2025.04.25>
 import numpy as np
 
 
-class get_E_Mod:
+class get_E_from_rho:
     def __init__(self, rho, scaling=None, output_unit="Pa"):
         '''
         Initialize the class with density, scaling, and desired output unit.
