@@ -282,7 +282,7 @@ Args:
     return ufloat(hhi,unc)
 
 
-def get_rho_from_hhi_gs_gt_kim_2014(hhi, gs, gt):
+def get_rho_from_hhi_gt_gs_kim_2014(hhi, gt, gs):
     ''' 
     Estimation of snow density (ρ) from Hand hardness index (hhi) and grain size (gs, mm)
     according to Eq. (5) in Kim & Jamieson (2014):
