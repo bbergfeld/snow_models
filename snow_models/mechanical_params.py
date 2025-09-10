@@ -128,7 +128,7 @@ class get_E_from_rho:
     def e_scapozza_2004(self):
         ''' 
         Scapozza 2004 (https://www.research-collection.ethz.ch/entities/publication/6996d34d-e46c-418a-adda-2fcccf731fd2) Page 96 formula 5-7
-        Parametrization of the Young's Moduls based on a Triaxial testing maschine. Strain rates ranged from 10**-6 to 10**-3 and snow temperatures ranged from -18.5°C to -1.9°C. 
+        Parametrization of the Young's Moduls based on a Triaxial testing maschine. Strain rates ranged from 10**-6 to 10**-3 and snow temperatures range: -18.5°C to -1.9°C, snow densities: 180 to 490 kg/m**3
         Korrelationskoeffizient of the fit fits : r2 = 0.928
         
         Returns:
@@ -138,9 +138,12 @@ class get_E_from_rho:
         result = self.apply_scaling(0.1873, result)
         return self.scale_output(result)
 
-    def e_sigrist_2006(self):
+    def e_sigrist_2006_powerlaw(self):
         ''' 
-        Sigrist 2006 formula.
+        Sigrist 2006 (https://www.research-collection.ethz.ch/entities/publication/1c564911-fb9f-4b1a-b3b3-b447e4df33cd) page 76, equation 4.8
+        Parametrization of the Young's Moduls on denstiy based on small cylindrical samples with a diameter of 48 mm and a height of 30 mm were loaded and unloaded with a frequency of 100 Hz. The force response F due to the predefined displacement resulted in a strain rate of e = 2 7 10~2s-1 results
+        snow densities: 215 to 355 kg/m**3
+        Korrelationskoeffizient of the fit: r2 = 0.80
         
         Returns:
             float: Elastic modulus in the desired unit (Pa, kPa, MPa, or GPa).
@@ -148,30 +151,23 @@ class get_E_from_rho:
         result = 1.89E-6 * self.rho**2.94 * 1E6  # Base formula without scaling
         result = self.apply_scaling(1.89E-6, result)
         return self.scale_output(result)
-        
-        
-    def get_rho_from_hh(self, result):
 
+    def e_sigrist_2006_exponential(self):
         ''' 
-        Scale the result based on the desired output unit.
-        
-        Args:
-            result (float): The raw elastic modulus value in Pa.
+        Sigrist 2006 (https://www.research-collection.ethz.ch/entities/publication/1c564911-fb9f-4b1a-b3b3-b447e4df33cd) page 76, in the text after equation 4.8
+        Parametrization of the Young's Moduls on denstiy based on small cylindrical samples with a diameter of 48 mm and a height of 30 mm were loaded and unloaded with a frequency of 100 Hz. The force response F due to the predefined displacement resulted in a strain rate of e = 2 7 10~2s-1 results
+        snow densities: 215 to 355 kg/m**3
+        Korrelationskoeffizient of the fit: r2 = 0.78
         
         Returns:
-            float: The scaled elastic modulus.
+            float: Elastic modulus in the desired unit (Pa, kPa, MPa, or GPa).
         '''
-        if self.output_unit == "Pa":
-            return result  # No scaling needed for Pa
-        elif self.output_unit == "kPa":
-            return result * 1E-3  # Convert Pa to kPa
-        elif self.output_unit == "MPa":
-            return result * 1E-6  # Convert Pa to MPa
-        elif self.output_unit == "GPa":
-            return result * 1E-9  # Convert Pa to GPa
-        else:
-            print("Invalid output unit. Use 'Pa', 'kPa', 'MPa', or 'GPa'.")
-            return None
+        result = 2.71 * np.exp(0.0085 * self.rho) * 1E6  # Base formula without scaling
+        result = self.apply_scaling(0.1873, result)
+        return self.scale_output(result)   
+    
+        
+
     
 
 
