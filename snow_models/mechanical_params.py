@@ -127,7 +127,9 @@ class get_E_from_rho:
 
     def e_scapozza_2004(self):
         ''' 
-        Scapozza 2004 formula.
+        Scapozza 2004 (https://www.research-collection.ethz.ch/entities/publication/6996d34d-e46c-418a-adda-2fcccf731fd2) Page 96 formula 5-7
+        Parametrization of the Young's Moduls based on a Triaxial testing maschine. Strain rates ranged from 10**-6 to 10**-3 and snow temperatures ranged from -18.5°C to -1.9°C. 
+        Korrelationskoeffizient of the fit fits : r2 = 0.928
         
         Returns:
             float: Elastic modulus in the desired unit (Pa, kPa, MPa, or GPa).
@@ -148,7 +150,29 @@ class get_E_from_rho:
         return self.scale_output(result)
         
         
+    def get_rho_from_hh(self, result):
+
+        ''' 
+        Scale the result based on the desired output unit.
         
+        Args:
+            result (float): The raw elastic modulus value in Pa.
+        
+        Returns:
+            float: The scaled elastic modulus.
+        '''
+        if self.output_unit == "Pa":
+            return result  # No scaling needed for Pa
+        elif self.output_unit == "kPa":
+            return result * 1E-3  # Convert Pa to kPa
+        elif self.output_unit == "MPa":
+            return result * 1E-6  # Convert Pa to MPa
+        elif self.output_unit == "GPa":
+            return result * 1E-9  # Convert Pa to GPa
+        else:
+            print("Invalid output unit. Use 'Pa', 'kPa', 'MPa', or 'GPa'.")
+            return None
+    
 
 
 
