@@ -172,7 +172,7 @@ class get_E_from_rho:
 def get_rho_from_hhi_geldsetzer_2001(hhi, gt):
 
     ''' 
-    Estimation of snow density based on Hand hardness index (hhi) and and Grain type (gt) according to:
+    Estimation of snow density based on Hand hardness index (hhi) and Grain type (gt) according to:
     Geldsetzer, T. and Jamieson, J.B., 2001. Estimating dry snow density from grain form and hand hardness, Proceedings International Snow Science Workshop, Big Sky, Montana, U.S.A., 1-6 October 2000. Montana State University, Bozeman MT, USA, pp. 121-127.
     https://arc.lib.montana.edu/snow-science/item.php?id=717
     
@@ -211,10 +211,112 @@ def get_rho_from_hhi_geldsetzer_2001(hhi, gt):
     elif gt == 'SH': ## Bastian Bergfeld added this guess
         rho, unc_rho = np.nan  ,np.nan 
         
-        
     else:  raise ValueError('grain type not valid: '+ gt) 
     return(ufloat(rho, unc_rho))
+
+
+
+def get_rho_from_gt_hhi_kim_2014(hhi, gt):
+    ''' 
+    Estimation of snow density based on Hand hardness index (hhi) and Grain type (gt) and Grain size according to:
+    Kim, D. and Jamieson, J.B., 2014. Estimating the Density of Dry Snow Layers From Hardness, and Hardness From Density, International Snow Science Workshop 2014 Proceedings, Banff, Canada, 2014 pp.540-547.
+    https://arc.lib.montana.edu/snow-science/item.php?id=2103
     
+    Args:
+        hhi (float): hand hardness index (e.g., F=1.0, 4F=2.0, 1F=3.0, P=4.0, K=5.0)
+        gt (string): Grain type from Fierz classification 
+                     ('PP', 'PPgp', 'DF', 'RG', 'RGxf', 'FC', 'FCxr', 'DH', 'MFcr')
+        
+    Returns:
+        ufloat: density of the snow layer in kg/m³ with standard error as uncertainty
+    '''
+    if gt == 'PP':
+        rho, unc, R2 = 41.3 + 40.3*hhi, 27, 0.35
+    elif gt == 'PPgp':
+        rho, unc, R2 = 61.8 + 46.4*hhi, 43, 0.55
+    elif gt == 'DF':
+        rho, unc, R2 = 62.5 + 37.4*hhi, 31, 0.50
+    elif gt == 'RGxf':
+        rho, unc, R2 = 85.0 + 46.3*hhi, 40, 0.58
+    elif gt == 'FC':
+        rho, unc, R2 = 103.0 + 50.6*hhi, 47, 0.53
+    elif gt == 'FCxr':
+        rho, unc, R2 = 68.8 + 58.6*hhi, 46, 0.50
+    elif gt == 'DH':
+        rho, unc, R2 = 214.0 + 19.0*hhi, 48, 0.12
+    elif gt == 'MFcr':
+        rho, unc, R2 = 235.0 + 15.1*hhi, 58, 0.027
+    elif gt == 'RG':
+        rho, unc, R2 = 91.8 * np.exp(0.270*hhi), 0.2, 0.55
+    else:
+        raise ValueError("Grain type not valid: " + gt)
+    
+    return ufloat(rho, unc)
+
+
+def get_hhi_from_rho_gs_kim_2014(rho, gs, gt):
+    ''' 
+    Estimation of Hand hardness index (hhi) from density (ρ) and grain size (gs, mm)
+    according to Eq. (4) in Kim & Jamieson (2014):
+    
+        h = A*ρ + B*gs + C
+    
+Args:
+        rho (float): density in kg/m³
+        gs (float): grain size in mm
+        gt (string): Grain type subset ('Facets', 'FCxr', 'RG')
+    
+    Returns:
+        float: estimated hardness index (no uncertainty)
+    '''
+    
+    if gt == 'Facets':
+        hhi, unc, R2 = 0.0101*rho - 0.277*gs + 0.685, 1, 0.53
+    elif gt == 'FCxr':
+        hhi, unc, R2 = 0.00839*rho - 0.381*gs + 1.56, 1, 0.51
+    elif gt == 'RG':
+        hhi, unc, R2 = 0.00830*rho - 0.0985*gs + 1.48, 1, 0.56
+    else:
+        raise ValueError("Grain type not valid for Eq.(4): " + gt)
+    
+    return ufloat(hhi,unc)
+
+
+def get_rho_from_hhi_gs_gt_kim_2014(hhi, gs, gt):
+    ''' 
+    Estimation of snow density (ρ) from Hand hardness index (hhi) and grain size (gs, mm)
+    according to Eq. (5) in Kim & Jamieson (2014):
+    
+        ρ = A*h + B*gs + C
+    
+    Args:
+        hhi (float): hand hardness index
+        gs (float): grain size (mm)
+        gt (string): Grain type subset 
+                     ('Facet', 'FCxr', 'PP', 'PPgp', 'DF', 'MF')
+    
+    Returns:
+        float: estimated density (kg/m³)
+    '''
+    
+    if gt == 'Facet':
+        rho, unc, R2 = 51.9*hhi + 19.7*gs + 82.8, 46, 0.53
+    elif gt == 'FCxr':
+        rho, unc, R2 = 60.4*hhi + 27.7*gs + 36.7, 45, 0.50
+    elif gt == 'PP':
+        rho, unc, R2 = 40.0*hhi - 7.33*gs + 52.8, 25, 0.39
+    elif gt == 'PPgp':
+        rho, unc, R2 = 38.8*hhi + 18.8*gs + 35.7, 33, 0.64
+    elif gt == 'DF':
+        rho, unc, R2 = 37.9*hhi - 8.87*gs + 71.4, 31, 0.52
+    elif gt == 'MF':
+        rho, unc, R2 = 34.9*hhi + 11.2*gs + 124.5, 63, 0.17
+    else:
+        raise ValueError("Grain type not valid for Eq.(5): " + gt)
+    
+    return ufloat(rho, unc)
+
+
 
 
 
