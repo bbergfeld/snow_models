@@ -14,7 +14,7 @@ Date Created: <2025.04.25>
 
 #%% getting Elastic moduli from densities
 import numpy as np
-
+from uncertainties import ufloat
 
 class get_E_from_rho:
     def __init__(self, rho, scaling=None, output_unit="Pa"):
@@ -167,7 +167,53 @@ class get_E_from_rho:
         return self.scale_output(result)   
     
         
+#%% getting density from manual profile
 
+def get_rho_from_hhi_geldsetzer_2001(hhi, gt):
+
+    ''' 
+    Estimation of snow density based on Hand hardness index (hhi) and and Grain type (gt) according to:
+    Geldsetzer, T. and Jamieson, J.B., 2001. Estimating dry snow density from grain form and hand hardness, Proceedings International Snow Science Workshop, Big Sky, Montana, U.S.A., 1-6 October 2000. Montana State University, Bozeman MT, USA, pp. 121-127.
+    https://arc.lib.montana.edu/snow-science/item.php?id=717
+    
+    Args:
+        hand hardness (float):  value of Handhardness index (1,2,3,4,5)
+        grain type (string): Grain typ from manual profile following Fierz et al (The International Classification for Seasonal Snow on the Ground)
+                            ( 'PP', 'PPgp', 'DF', 'RGmx', 'FC', 'FCmx', 'DH', 'MFcr', 'MF', 'IF', 'SH')
+        
+    Returns:
+        float: density of the snow layer in kg/m**3
+    '''
+
+    if gt == 'PP':
+        rho, unc_rho = 45 + 36*hhi, 27
+    elif gt == 'PPgp':
+        rho, unc_rho = 83 + 37*hhi, 42       
+    elif gt == 'DF':
+        rho, unc_rho = 65 + 36*hhi,30
+    elif gt == 'RG':
+        rho, unc_rho = 154 + 1.51*hhi**3.15, 46       
+    elif gt == 'RGmx':
+        rho, unc_rho = 91 + 42*hhi     ,32
+    elif gt == 'FC':
+        rho, unc_rho = 112 + 46*hhi   ,43
+    elif gt == 'FCmx':
+        rho, unc_rho = 56 + 64*hhi    ,43
+    elif gt == 'DH':
+        rho, unc_rho = 185 + 25*hhi  ,41
+    
+    elif gt == 'MFcr': ## Bastian Bergfeld added this guess
+        rho, unc_rho = 2*(185 + 25*hhi)  ,2*41 
+    elif gt == 'MF': ## Bastian Bergfeldi added this guess
+        rho, unc_rho = 2*(185 + 25*hhi)  ,2*41         
+    elif gt == 'IF': ## Bastian Bergfeld added this guess
+        rho, unc_rho = 870  ,50   
+    elif gt == 'SH': ## Bastian Bergfeld added this guess
+        rho, unc_rho = np.nan  ,np.nan 
+        
+        
+    else:  raise ValueError('grain type not valid: '+ gt) 
+    return(ufloat(rho, unc_rho))
     
 
 
